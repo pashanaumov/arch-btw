@@ -1,5 +1,6 @@
 agent = "kiro"
 tracker = "beads"
+autoCommit = true
 
 [agentOptions]
 trustAllTools = true
