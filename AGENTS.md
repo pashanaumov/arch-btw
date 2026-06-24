@@ -48,6 +48,30 @@ mempalace mine .                 # rebuild the local palace from repo files (esp
 mempalace status                 # confirm the wing/rooms are populated
 ```
 
+**Live memory (drawers + diary) travels as a scoped text dump.** Because
+MCP-added drawers and diary entries are NOT reproduced by mining docs,
+`scripts/mempalace-sync.sh export` writes only this project's drawers (scoped by
+`wing='arch-btw' OR topic='arch-btw'`) to `docs/memory/arch-btw.jsonl`. This runs
+automatically on every commit (via the beads pre-commit hook) and is committed to
+git. To faithfully restore them on a fresh clone, the agent should re-add each
+line additively (dedup-checked, so it is idempotent and never clobbers other
+projects' memory):
+
+```text
+For each line in docs/memory/arch-btw.jsonl:
+  text = meta["chroma:document"]; wing = meta["wing"]; room = meta["room"]
+  if not mempalace_check_duplicate(text): mempalace_add_drawer(wing, room, text)
+```
+
+Notes / limitations:
+- The export is READ-ONLY against `chroma.sqlite3` and depends on chroma's
+  `embedding_metadata` table shape; if a chroma upgrade changes it, update the
+  script (read-only, low risk).
+- Re-adding regenerates embeddings locally and assigns fresh `filed_at` (the
+  original is preserved in the JSONL). Content/wing/room are preserved.
+- Knowledge-graph facts (`mempalace_kg_*`) live in a separate store and are NOT
+  covered by this dump. If the project starts using the KG, extend the script.
+
 > **Source of truth:** `docs/CONTEXT.md` is the durable, git-portable record of
 > project decisions. Memories added only via the MCP `add_drawer` tool live in
 > the global ChromaDB and will NOT survive a clone — so any decision worth
