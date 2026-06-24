@@ -1,6 +1,9 @@
+configVersion = "2.1"
 agent = "kiro"
 tracker = "beads"
 autoCommit = true
+model = "claude-sonnet4.5"
+subagentTracingDetail = "full"
 
 [agentOptions]
 trustAllTools = true
