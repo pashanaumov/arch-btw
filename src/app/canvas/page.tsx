@@ -24,88 +24,53 @@ export default function CanvasPage() {
           display: "flex",
           flexDirection: "column",
           borderLeft: "1px solid #e5e7eb",
-          background: "#fefce8", // warm notebook yellow
-          fontFamily: "Georgia, 'Times New Roman', serif",
+          background: "#ffffff",
         }}
       >
         {/* Header */}
         <div
           style={{
-            padding: "16px 20px 12px",
-            borderBottom: "1px solid #d1d5db",
-            background: "#fef9c3",
+            padding: "14px 20px",
+            borderBottom: "1px solid #f3f4f6",
           }}
         >
-          <div style={{ fontSize: 13, fontWeight: 700, color: "#78350f", letterSpacing: "0.05em" }}>
-            📓 Design Notes
+          <div style={{ fontSize: 12, fontWeight: 600, color: "#111827", letterSpacing: "0.03em" }}>
+            Design Notes
           </div>
-          <div style={{ fontSize: 11, color: "#92400e", marginTop: 2 }}>
-            Trade-offs, assumptions, open questions
+          <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 1 }}>
+            Assumptions · trade-offs · open questions
           </div>
         </div>
 
-        {/* Lined textarea area */}
-        <div style={{ flex: 1, position: "relative", overflow: "hidden" }}>
-          {/* Lined paper effect */}
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              backgroundImage: "repeating-linear-gradient(transparent, transparent 27px, #fde68a 27px, #fde68a 28px)",
-              backgroundPositionY: "20px",
-              pointerEvents: "none",
-              zIndex: 0,
-            }}
-          />
-          {/* Red margin line */}
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              bottom: 0,
-              left: 48,
-              width: 1,
-              background: "#fca5a5",
-              opacity: 0.5,
-              pointerEvents: "none",
-              zIndex: 1,
-            }}
-          />
-          <textarea
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            placeholder={"Start writing...\n\nWhat assumptions are you making?\nWhat trade-offs are you accepting?\nWhat questions would you ask the interviewer?"}
-            style={{
-              position: "absolute",
-              inset: 0,
-              width: "100%",
-              height: "100%",
-              padding: "20px 16px 16px 56px",
-              border: "none",
-              background: "transparent",
-              fontSize: 14,
-              lineHeight: "28px",
-              fontFamily: "Georgia, 'Times New Roman', serif",
-              color: "#1c1917",
-              resize: "none",
-              outline: "none",
-              boxSizing: "border-box",
-              zIndex: 2,
-            }}
-          />
-        </div>
+        {/* Textarea */}
+        <textarea
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          placeholder={"What assumptions are you making?\n\nWhat trade-offs are you accepting?\n\nWhat would you ask the interviewer?"}
+          style={{
+            flex: 1,
+            padding: "16px 20px",
+            border: "none",
+            background: "transparent",
+            fontSize: 13,
+            lineHeight: 1.7,
+            fontFamily: "inherit",
+            color: "#111827",
+            resize: "none",
+            outline: "none",
+          }}
+        />
 
-        {/* Footer - word count */}
+        {/* Footer */}
         <div
           style={{
-            padding: "6px 20px",
-            borderTop: "1px solid #d1d5db",
-            background: "#fef9c3",
+            padding: "8px 20px",
+            borderTop: "1px solid #f3f4f6",
             fontSize: 11,
-            color: "#92400e",
+            color: "#9ca3af",
           }}
         >
-          {notes.trim() ? `${notes.trim().split(/\s+/).length} words` : "Empty — the interviewer can probe unexplained choices"}
+          {notes.trim() ? `${notes.trim().split(/\s+/).length} words` : "Empty — interviewer will probe unexplained choices"}
         </div>
       </div>
     </div>
