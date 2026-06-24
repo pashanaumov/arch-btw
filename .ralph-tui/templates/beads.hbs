@@ -1,0 +1,79 @@
+{{!-- arch-btw project template for ralph-tui + kiro --}}
+
+## Project Context
+
+**arch-btw** is a single-player system-design interview practice tool. Users drag infrastructure components onto a tldraw canvas, connect them, then enter a turn-based PR-review loop with an LLM critic. It ends with a structured scorecard debrief.
+
+**Stack:** Next.js App Router (React 19) · TypeScript strict · Tailwind + shadcn/ui · tldraw · Drizzle ORM + Neon Postgres · Better Auth + GitHub OAuth · Vercel AI SDK (streamText + generateObject) · hosted on Vercel.
+
+**Key decisions:**
+- Canvas: tldraw with 12 custom ShapeUtils (Service/API, Worker, Queue/Stream, SQL DB, NoSQL, Cache, Object storage, Gateway/LB, Third-party API, LLM provider, Webhook source, Cron + Custom)
+- LLM: swappable via env key (GEMINI_API_KEY / ANTHROPIC_API_KEY / OPENAI_API_KEY), all server-side
+- Serialization: tldraw store → `{ nodes, edges, notes }` JSON via a tested adapter; store both tldraw snapshot AND graph JSON
+- Auth: Better Auth (NOT Auth.js) + GitHub OAuth
+- DB: Drizzle + Neon. Scorecard uses Zod, shared between AI SDK / DB JSON column / React render.
+- Issue tracker: beads (`bd` CLI). Epic: arch-btw-2bq.
+
+**Read `docs/CONTEXT.md` for full decision log before implementing.**
+
+---
+
+{{#if recentProgress}}
+## Progress So Far
+{{recentProgress}}
+
+---
+{{/if}}
+
+## Your Task: {{taskId}} — {{taskTitle}}
+
+{{#if taskDescription}}
+### Description
+{{taskDescription}}
+{{/if}}
+
+{{#if acceptanceCriteria}}
+### Acceptance Criteria
+{{acceptanceCriteria}}
+{{/if}}
+
+{{#if dependsOn}}
+### Prerequisites (already closed)
+{{dependsOn}}
+{{/if}}
+
+{{#if blocks}}
+### Unblocks
+{{blocks}}
+{{/if}}
+
+---
+
+## Workflow
+
+1. Read `docs/CONTEXT.md` to understand decisions (especially anything relevant to this task).
+2. Read `.ralph-tui/progress.md` for patterns, gotchas, and learnings from earlier iterations.
+3. Implement the task following the acceptance criteria above.
+4. Run quality gates (see below) — fix any failures before continuing.
+5. Commit with message: `feat({{taskId}}): {{taskTitle}}`
+6. Update `.ralph-tui/progress.md`: append a `## [{{taskId}}]` section with what you did, files changed, and any patterns/gotchas worth noting. If you discovered a reusable pattern, also add it to the `## Codebase Patterns` section at the top.
+7. Signal completion.
+
+## Quality Gates (REQUIRED — all must pass)
+
+```bash
+pnpm typecheck      # tsc --noEmit — must pass with zero errors
+pnpm lint           # eslint — must pass with zero warnings
+pnpm build          # next build — must succeed
+```
+
+If a test runner is configured (`pnpm test`), run that too.
+
+## Stop Condition
+
+If the work described is already fully implemented and meets the acceptance criteria, verify the quality gates pass and signal completion immediately — do not re-implement.
+
+---
+
+When done, output exactly:
+<promise>COMPLETE</promise>

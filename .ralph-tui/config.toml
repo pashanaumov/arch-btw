@@ -1,0 +1,8 @@
+agent = "kiro"
+tracker = "beads"
+
+[agentOptions]
+trustAllTools = true
+
+[trackerOptions]
+beadsDir = ".beads"
