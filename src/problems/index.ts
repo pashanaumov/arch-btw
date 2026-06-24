@@ -1,5 +1,6 @@
 import "server-only";
 import type { Problem } from "@/types/problem";
+import { ADDITIONAL_PROBLEMS } from "./additional";
 
 export const urlShortener: Problem = {
   id: "url-shortener",
@@ -43,4 +44,4 @@ export const urlShortener: Problem = {
     "Read path: check Redis first, fall back to DB, repopulate cache.",
 };
 
-export const ALL_PROBLEMS: Problem[] = [urlShortener];
+export const ALL_PROBLEMS: Problem[] = [urlShortener, ...ADDITIONAL_PROBLEMS];
