@@ -1,0 +1,6 @@
+wing: arch_btw
+rooms:
+- name: configuration
+  description: Files related to configuration
+  keywords:
+  - configuration
