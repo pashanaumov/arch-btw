@@ -7,13 +7,12 @@ import { attempt } from "@/db/schema";
 import { ALL_PROBLEMS } from "@/problems/index";
 import { scorecardSchema } from "@/types/scorecard";
 import type { DesignGraph } from "@/lib/serialize";
-import type { TLEditorSnapshot } from "tldraw";
 
 type TranscriptTurn = { role: "user" | "assistant"; content: string };
 
 type DebriefRequest = {
   problemId: string;
-  tlDrawSnapshot: TLEditorSnapshot;
+  canvasSnapshot: unknown; // Excalidraw elements + appState JSON
   graphJson: DesignGraph;
   transcript: TranscriptTurn[];
 };
@@ -31,7 +30,7 @@ export async function POST(req: Request) {
     return Response.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { problemId, tlDrawSnapshot, graphJson, transcript } = body;
+  const { problemId, canvasSnapshot, graphJson, transcript } = body;
   if (!problemId || !graphJson || !transcript) {
     return Response.json({ error: "Missing required fields" }, { status: 400 });
   }
@@ -72,14 +71,13 @@ Generate a structured scorecard. Reference design (to be revealed): ${problem.re
     return Response.json({ error: "Failed to generate scorecard" }, { status: 500 });
   }
 
-  // Persist the attempt
   const attemptId = crypto.randomUUID();
   try {
     await db.insert(attempt).values({
       id: attemptId,
       userId: session.user.id,
       problemId,
-      tlDrawSnapshot: tlDrawSnapshot ?? null,
+      canvasSnapshot: canvasSnapshot ?? null,
       graphJson: graphJson as never,
       transcript: transcript as never,
       scorecard: scorecard as never,

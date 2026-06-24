@@ -1,79 +1,73 @@
 "use client";
-import { useCallback, useState } from "react";
-import {
-  Tldraw,
-  useEditor,
-  createShapeId,
-  type TLEditorSnapshot,
-} from "tldraw";
-import "tldraw/tldraw.css";
-import { ComponentShapeUtil } from "./ComponentShapeUtil";
-import { ComponentPalette } from "./ComponentPalette";
+import { useEffect, useRef, useState } from "react";
+import { Excalidraw } from "@excalidraw/excalidraw";
+import type { ExcalidrawImperativeAPI, AppState } from "@excalidraw/excalidraw/types";
+import type { ExcalidrawElement } from "@excalidraw/excalidraw/element/types";
+import "@excalidraw/excalidraw/index.css";
 import { NotesPanel } from "./NotesPanel";
-import type { ComponentType } from "./shapes";
 
-const SHAPE_UTILS = [ComponentShapeUtil];
-
-type CanvasProps = {
-  snapshot?: TLEditorSnapshot;
-  notes?: string;
-  onSnapshotChange?: (snapshot: TLEditorSnapshot, notes: string) => void;
+export type CanvasSnapshot = {
+  elements: readonly ExcalidrawElement[];
+  appState: Partial<AppState>;
 };
 
-function CanvasInner({ notes: initialNotes = "", onSnapshotChange }: Omit<CanvasProps, "snapshot">) {
-  const editor = useEditor();
+type DesignCanvasProps = {
+  snapshot?: CanvasSnapshot;
+  notes?: string;
+  onSnapshotChange?: (snapshot: CanvasSnapshot, notes: string) => void;
+};
+
+export function DesignCanvas({ snapshot, notes: initialNotes = "", onSnapshotChange }: DesignCanvasProps) {
+  const [excalidrawAPI, setExcalidrawAPI] = useState<ExcalidrawImperativeAPI | null>(null);
   const [notes, setNotes] = useState(initialNotes);
+  const notesRef = useRef(initialNotes);
 
-  const handleAddShape = useCallback(
-    (componentType: ComponentType) => {
-      const id = createShapeId();
-      editor.createShape({
-        id,
-        type: "component" as never,
-        x: 100 + Math.random() * 200,
-        y: 100 + Math.random() * 200,
-        props: {
-          w: 160,
-          h: 80,
-          componentType,
-          label: "",
-          explanation: "",
+  // Load library once API is available
+  useEffect(() => {
+    if (!excalidrawAPI) return;
+
+    fetch("/arch-btw-library.excalidrawlib")
+      .then((r) => r.json())
+      .then((lib) => {
+        excalidrawAPI.updateLibrary({
+          libraryItems: lib.libraryItems,
+          merge: false,
+          openLibraryMenu: false,
+        });
+      })
+      .catch(console.error);
+  }, [excalidrawAPI]);
+
+  function handleChange(elements: readonly ExcalidrawElement[], appState: AppState) {
+    if (!onSnapshotChange) return;
+    onSnapshotChange({ elements, appState }, notesRef.current);
+  }
+
+  function handleNotesChange(value: string) {
+    notesRef.current = value;
+    setNotes(value);
+    if (onSnapshotChange && excalidrawAPI) {
+      onSnapshotChange(
+        {
+          elements: excalidrawAPI.getSceneElements(),
+          appState: excalidrawAPI.getAppState(),
         },
-      });
-      editor.select(id);
-    },
-    [editor]
-  );
+        value
+      );
+    }
+  }
 
-  const handleNotesChange = useCallback(
-    (value: string) => {
-      setNotes(value);
-      if (onSnapshotChange) {
-        const snapshot = editor.getSnapshot();
-        onSnapshotChange(snapshot, value);
-      }
-    },
-    [editor, onSnapshotChange]
-  );
-
-  return (
-    <>
-      <ComponentPalette onAdd={handleAddShape} />
-      <NotesPanel notes={notes} onChange={handleNotesChange} />
-    </>
-  );
-}
-
-export function DesignCanvas({ snapshot, notes, onSnapshotChange }: CanvasProps) {
   return (
     <div style={{ position: "absolute", inset: 0 }}>
-      <Tldraw
-        shapeUtils={SHAPE_UTILS}
-        snapshot={snapshot}
-        persistenceKey="arch-btw-canvas"
-      >
-        <CanvasInner notes={notes} onSnapshotChange={onSnapshotChange} />
-      </Tldraw>
+      <Excalidraw
+        excalidrawAPI={(api) => setExcalidrawAPI(api)}
+        initialData={snapshot ? { elements: snapshot.elements as never, appState: snapshot.appState } : undefined}
+        onChange={handleChange}
+        UIOptions={{
+          canvasActions: { loadScene: false, export: false, saveToActiveFile: false },
+        }}
+      />
+      <NotesPanel notes={notes} onChange={handleNotesChange} />
     </div>
   );
 }

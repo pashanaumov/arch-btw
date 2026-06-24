@@ -1,0 +1,25 @@
+{
+  "id": "f6acb5c9-a0c7-4715-a6cc-ad40916c858c",
+  "status": "interrupted",
+  "startedAt": "2026-06-24T13:21:56.333Z",
+  "updatedAt": "2026-06-24T13:23:18.705Z",
+  "agentPlugin": "kiro",
+  "trackerPlugin": "beads",
+  "epicId": "arch-btw-2bq",
+  "epicIds": [
+    "arch-btw-2bq"
+  ],
+  "executionScopes": [
+    {
+      "id": "arch-btw-2bq",
+      "title": "arch-btw-2bq",
+      "type": "epic"
+    }
+  ],
+  "currentIteration": 0,
+  "maxIterations": 10,
+  "totalTasks": 0,
+  "tasksCompleted": 0,
+  "cwd": "/Users/pasha/Desktop/dev/arch-btw",
+  "endedAt": "2026-06-24T13:23:18.705Z"
+}

@@ -59,8 +59,8 @@ export const attempt = pgTable("attempt", {
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
   problemId: text("problem_id").notNull(),
-  /** Full tldraw store snapshot (for reload/edit) */
-  tlDrawSnapshot: jsonb("tldraw_snapshot"),
+  /** Excalidraw canvas snapshot (elements + appState) for reload/edit */
+  canvasSnapshot: jsonb("canvas_snapshot"),
   /** Derived { nodes, edges, notes } JSON (LLM input + durable record) */
   graphJson: jsonb("graph_json"),
   /** Array of { role, content } turn objects */

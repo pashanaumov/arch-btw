@@ -1,0 +1,254 @@
+{
+  "type": "excalidrawlib",
+  "version": 2,
+  "source": "arch-btw",
+  "libraryItems": [
+    {
+      "id": "lib-service",
+      "status": "published",
+      "name": "Service / API",
+      "created": 1719244800000,
+      "elements": [{
+        "id": "service-1",
+        "type": "rectangle",
+        "x": 0, "y": 0, "width": 160, "height": 80,
+        "angle": 0, "strokeColor": "#1d4ed8", "backgroundColor": "#3b82f6",
+        "fillStyle": "hachure", "strokeWidth": 2, "strokeStyle": "solid",
+        "roughness": 1, "opacity": 100, "groupIds": [],
+        "roundness": { "type": 3 },
+        "label": { "text": "Service / API" },
+        "customData": { "componentType": "service" },
+        "version": 1, "versionNonce": 1, "isDeleted": false, "boundElements": null,
+        "updated": 1719244800000, "link": null, "locked": false
+      }]
+    },
+    {
+      "id": "lib-worker",
+      "status": "published",
+      "name": "Worker",
+      "created": 1719244800000,
+      "elements": [{
+        "id": "worker-1",
+        "type": "rectangle",
+        "x": 0, "y": 0, "width": 160, "height": 80,
+        "angle": 0, "strokeColor": "#6d28d9", "backgroundColor": "#8b5cf6",
+        "fillStyle": "hachure", "strokeWidth": 2, "strokeStyle": "solid",
+        "roughness": 1, "opacity": 100, "groupIds": [],
+        "roundness": { "type": 3 },
+        "label": { "text": "Worker" },
+        "customData": { "componentType": "worker" },
+        "version": 1, "versionNonce": 2, "isDeleted": false, "boundElements": null,
+        "updated": 1719244800000, "link": null, "locked": false
+      }]
+    },
+    {
+      "id": "lib-queue",
+      "status": "published",
+      "name": "Queue / Stream",
+      "created": 1719244800000,
+      "elements": [{
+        "id": "queue-1",
+        "type": "diamond",
+        "x": 0, "y": 0, "width": 160, "height": 80,
+        "angle": 0, "strokeColor": "#b45309", "backgroundColor": "#f59e0b",
+        "fillStyle": "hachure", "strokeWidth": 2, "strokeStyle": "solid",
+        "roughness": 1, "opacity": 100, "groupIds": [],
+        "roundness": { "type": 2 },
+        "label": { "text": "Queue / Stream" },
+        "customData": { "componentType": "queue" },
+        "version": 1, "versionNonce": 3, "isDeleted": false, "boundElements": null,
+        "updated": 1719244800000, "link": null, "locked": false
+      }]
+    },
+    {
+      "id": "lib-sql-db",
+      "status": "published",
+      "name": "SQL DB",
+      "created": 1719244800000,
+      "elements": [{
+        "id": "sqldb-1",
+        "type": "ellipse",
+        "x": 0, "y": 0, "width": 160, "height": 80,
+        "angle": 0, "strokeColor": "#047857", "backgroundColor": "#10b981",
+        "fillStyle": "hachure", "strokeWidth": 2, "strokeStyle": "solid",
+        "roughness": 1, "opacity": 100, "groupIds": [],
+        "roundness": { "type": 2 },
+        "label": { "text": "SQL DB" },
+        "customData": { "componentType": "sql-db" },
+        "version": 1, "versionNonce": 4, "isDeleted": false, "boundElements": null,
+        "updated": 1719244800000, "link": null, "locked": false
+      }]
+    },
+    {
+      "id": "lib-nosql-db",
+      "status": "published",
+      "name": "NoSQL DB",
+      "created": 1719244800000,
+      "elements": [{
+        "id": "nosqldb-1",
+        "type": "ellipse",
+        "x": 0, "y": 0, "width": 160, "height": 80,
+        "angle": 0, "strokeColor": "#0e7490", "backgroundColor": "#06b6d4",
+        "fillStyle": "hachure", "strokeWidth": 2, "strokeStyle": "solid",
+        "roughness": 1, "opacity": 100, "groupIds": [],
+        "roundness": { "type": 2 },
+        "label": { "text": "NoSQL DB" },
+        "customData": { "componentType": "nosql-db" },
+        "version": 1, "versionNonce": 5, "isDeleted": false, "boundElements": null,
+        "updated": 1719244800000, "link": null, "locked": false
+      }]
+    },
+    {
+      "id": "lib-cache",
+      "status": "published",
+      "name": "Cache",
+      "created": 1719244800000,
+      "elements": [{
+        "id": "cache-1",
+        "type": "ellipse",
+        "x": 0, "y": 0, "width": 160, "height": 80,
+        "angle": 0, "strokeColor": "#b91c1c", "backgroundColor": "#ef4444",
+        "fillStyle": "hachure", "strokeWidth": 2, "strokeStyle": "solid",
+        "roughness": 1, "opacity": 100, "groupIds": [],
+        "roundness": { "type": 2 },
+        "label": { "text": "Cache" },
+        "customData": { "componentType": "cache" },
+        "version": 1, "versionNonce": 6, "isDeleted": false, "boundElements": null,
+        "updated": 1719244800000, "link": null, "locked": false
+      }]
+    },
+    {
+      "id": "lib-object-storage",
+      "status": "published",
+      "name": "Object Storage",
+      "created": 1719244800000,
+      "elements": [{
+        "id": "objstorage-1",
+        "type": "rectangle",
+        "x": 0, "y": 0, "width": 160, "height": 80,
+        "angle": 0, "strokeColor": "#4338ca", "backgroundColor": "#6366f1",
+        "fillStyle": "hachure", "strokeWidth": 2, "strokeStyle": "solid",
+        "roughness": 1, "opacity": 100, "groupIds": [],
+        "roundness": { "type": 3 },
+        "label": { "text": "Object Storage" },
+        "customData": { "componentType": "object-storage" },
+        "version": 1, "versionNonce": 7, "isDeleted": false, "boundElements": null,
+        "updated": 1719244800000, "link": null, "locked": false
+      }]
+    },
+    {
+      "id": "lib-gateway",
+      "status": "published",
+      "name": "Gateway / LB",
+      "created": 1719244800000,
+      "elements": [{
+        "id": "gateway-1",
+        "type": "diamond",
+        "x": 0, "y": 0, "width": 160, "height": 80,
+        "angle": 0, "strokeColor": "#c2410c", "backgroundColor": "#f97316",
+        "fillStyle": "hachure", "strokeWidth": 2, "strokeStyle": "solid",
+        "roughness": 1, "opacity": 100, "groupIds": [],
+        "roundness": { "type": 2 },
+        "label": { "text": "Gateway / LB" },
+        "customData": { "componentType": "gateway" },
+        "version": 1, "versionNonce": 8, "isDeleted": false, "boundElements": null,
+        "updated": 1719244800000, "link": null, "locked": false
+      }]
+    },
+    {
+      "id": "lib-third-party",
+      "status": "published",
+      "name": "Third-party API",
+      "created": 1719244800000,
+      "elements": [{
+        "id": "thirdparty-1",
+        "type": "rectangle",
+        "x": 0, "y": 0, "width": 160, "height": 80,
+        "angle": 0, "strokeColor": "#4d7c0f", "backgroundColor": "#84cc16",
+        "fillStyle": "hachure", "strokeWidth": 2, "strokeStyle": "solid",
+        "roughness": 1, "opacity": 100, "groupIds": [],
+        "roundness": { "type": 3 },
+        "label": { "text": "Third-party API" },
+        "customData": { "componentType": "third-party" },
+        "version": 1, "versionNonce": 9, "isDeleted": false, "boundElements": null,
+        "updated": 1719244800000, "link": null, "locked": false
+      }]
+    },
+    {
+      "id": "lib-llm-provider",
+      "status": "published",
+      "name": "LLM Provider",
+      "created": 1719244800000,
+      "elements": [{
+        "id": "llm-1",
+        "type": "ellipse",
+        "x": 0, "y": 0, "width": 160, "height": 80,
+        "angle": 0, "strokeColor": "#9d174d", "backgroundColor": "#ec4899",
+        "fillStyle": "hachure", "strokeWidth": 2, "strokeStyle": "solid",
+        "roughness": 1, "opacity": 100, "groupIds": [],
+        "roundness": { "type": 2 },
+        "label": { "text": "LLM Provider" },
+        "customData": { "componentType": "llm-provider" },
+        "version": 1, "versionNonce": 10, "isDeleted": false, "boundElements": null,
+        "updated": 1719244800000, "link": null, "locked": false
+      }]
+    },
+    {
+      "id": "lib-webhook",
+      "status": "published",
+      "name": "Webhook Source",
+      "created": 1719244800000,
+      "elements": [{
+        "id": "webhook-1",
+        "type": "diamond",
+        "x": 0, "y": 0, "width": 160, "height": 80,
+        "angle": 0, "strokeColor": "#0f766e", "backgroundColor": "#14b8a6",
+        "fillStyle": "hachure", "strokeWidth": 2, "strokeStyle": "solid",
+        "roughness": 1, "opacity": 100, "groupIds": [],
+        "roundness": { "type": 2 },
+        "label": { "text": "Webhook Source" },
+        "customData": { "componentType": "webhook" },
+        "version": 1, "versionNonce": 11, "isDeleted": false, "boundElements": null,
+        "updated": 1719244800000, "link": null, "locked": false
+      }]
+    },
+    {
+      "id": "lib-cron",
+      "status": "published",
+      "name": "Cron",
+      "created": 1719244800000,
+      "elements": [{
+        "id": "cron-1",
+        "type": "diamond",
+        "x": 0, "y": 0, "width": 160, "height": 80,
+        "angle": 0, "strokeColor": "#7c3aed", "backgroundColor": "#a78bfa",
+        "fillStyle": "hachure", "strokeWidth": 2, "strokeStyle": "solid",
+        "roughness": 1, "opacity": 100, "groupIds": [],
+        "roundness": { "type": 2 },
+        "label": { "text": "Cron" },
+        "customData": { "componentType": "cron" },
+        "version": 1, "versionNonce": 12, "isDeleted": false, "boundElements": null,
+        "updated": 1719244800000, "link": null, "locked": false
+      }]
+    },
+    {
+      "id": "lib-custom",
+      "status": "published",
+      "name": "Custom",
+      "created": 1719244800000,
+      "elements": [{
+        "id": "custom-1",
+        "type": "rectangle",
+        "x": 0, "y": 0, "width": 160, "height": 80,
+        "angle": 0, "strokeColor": "#374151", "backgroundColor": "#6b7280",
+        "fillStyle": "hachure", "strokeWidth": 2, "strokeStyle": "dashed",
+        "roughness": 1, "opacity": 100, "groupIds": [],
+        "roundness": { "type": 3 },
+        "label": { "text": "Custom" },
+        "customData": { "componentType": "custom" },
+        "version": 1, "versionNonce": 13, "isDeleted": false, "boundElements": null,
+        "updated": 1719244800000, "link": null, "locked": false
+      }]
+    }
+  ]
+}

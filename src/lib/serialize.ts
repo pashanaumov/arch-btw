@@ -1,6 +1,6 @@
-import type { TLEditorSnapshot, TLArrowBinding, TLShape } from "tldraw";
-import type { ComponentType } from "@/components/canvas/shapes";
-import { COMPONENT_LABELS } from "@/components/canvas/shapes";
+import type { ExcalidrawElement } from "@excalidraw/excalidraw/element/types";
+import type { ComponentType } from "@/components/canvas/component-types";
+import { COMPONENT_LABELS } from "@/components/canvas/component-types";
 
 export type GraphNode = {
   id: string;
@@ -21,84 +21,49 @@ export type DesignGraph = {
   notes: string;
 };
 
-type ComponentShapeProps = {
-  componentType: string;
-  label: string;
-  explanation: string;
-  w: number;
-  h: number;
-};
-
-type StoreRecord = { typeName: string; type?: string; props?: unknown; id: string };
-
-function isComponentRecord(r: StoreRecord): r is StoreRecord & { props: ComponentShapeProps } {
-  return r.typeName === "shape" && (r as { type?: string }).type === "component";
-}
-
-function isArrowBindingRecord(r: StoreRecord): r is TLArrowBinding & StoreRecord {
-  return r.typeName === "binding" && (r as { type?: string }).type === "arrow";
-}
-
 /**
- * Converts a tldraw editor snapshot + notes into a clean directed graph JSON
- * for LLM consumption. Arrows in tldraw v5 use separate binding records
- * (TLArrowBinding) with fromId = arrow shape, toId = connected shape,
- * terminal = 'start' | 'end'.
+ * Converts Excalidraw elements + notes into a directed graph JSON for LLM consumption.
+ *
+ * Nodes: non-arrow elements with customData.componentType
+ * Label format: "Component Name\noptional explanation on second line"
+ * Edges: arrow elements with startBinding.elementId -> endBinding.elementId
  */
-export function serializeDesign(snapshot: TLEditorSnapshot, notes: string): DesignGraph {
-  const store = snapshot.document.store as Record<string, StoreRecord>;
-  const records = Object.values(store);
+export function serializeDesign(elements: readonly ExcalidrawElement[], notes: string): DesignGraph {
+  const nodeElements = elements.filter(
+    (el) => !el.isDeleted && el.type !== "arrow" && el.type !== "line" && el.type !== "text" && el.type !== "freedraw" && (el.customData as Record<string, unknown> | undefined)?.componentType
+  );
 
-  const nodes: GraphNode[] = records
-    .filter(isComponentRecord)
-    .map((r) => {
-      const props = r.props;
-      const componentType = props.componentType as ComponentType;
-      return {
-        id: r.id,
-        type: componentType in COMPONENT_LABELS ? componentType : "unknown",
-        label: props.label || COMPONENT_LABELS[componentType as keyof typeof COMPONENT_LABELS] || componentType,
-        explanation: props.explanation,
-      };
-    });
+  const nodes: GraphNode[] = nodeElements.map((el) => {
+    const cd = el.customData as Record<string, unknown>;
+    const componentType = cd.componentType as string;
+    const rawLabel = (el as { label?: { text?: string }; text?: string }).label?.text ?? (el as { text?: string }).text ?? "";
+    const lines = rawLabel.split("\n");
+    const displayLabel = lines[0]?.trim() || COMPONENT_LABELS[componentType as ComponentType] || componentType;
+    const explanation = lines[1]?.trim() ?? "";
+
+    return {
+      id: el.id,
+      type: componentType in COMPONENT_LABELS ? (componentType as ComponentType) : "unknown",
+      label: displayLabel,
+      explanation,
+    };
+  });
 
   const nodeIds = new Set(nodes.map((n) => n.id));
 
-  // Group arrow bindings by the arrow shape they belong to
-  const bindingsByArrow = new Map<string, { start?: string; end?: string }>();
+  const edges: GraphEdge[] = elements
+    .filter((el) => !el.isDeleted && el.type === "arrow")
+    .flatMap((el) => {
+      const arrow = el as ExcalidrawElement & {
+        startBinding: { elementId: string } | null;
+        endBinding: { elementId: string } | null;
+      };
+      const fromId = arrow.startBinding?.elementId;
+      const toId = arrow.endBinding?.elementId;
 
-  for (const record of records) {
-    if (!isArrowBindingRecord(record)) continue;
-    const binding = record as TLArrowBinding;
-    const arrowId = binding.fromId;
-    const targetId = binding.toId;
-    const terminal = binding.props.terminal;
-
-    if (!nodeIds.has(targetId)) continue; // target must be a component
-
-    const entry = bindingsByArrow.get(arrowId) ?? {};
-    if (terminal === "start") entry.start = targetId;
-    else if (terminal === "end") entry.end = targetId;
-    bindingsByArrow.set(arrowId, entry);
-  }
-
-  const edges: GraphEdge[] = [];
-  for (const [arrowId, { start, end }] of bindingsByArrow) {
-    if (start && end) {
-      edges.push({ id: arrowId, from: start, to: end });
-    }
-    // Arrow with only one terminal bound = excluded (no crash)
-  }
+      if (!fromId || !toId || !nodeIds.has(fromId) || !nodeIds.has(toId)) return [];
+      return [{ id: arrow.id, from: fromId, to: toId }];
+    });
 
   return { nodes, edges, notes };
 }
-
-/**
- * Returns the snapshot as-is for durable storage (reload/edit use).
- */
-export function extractSnapshot(snapshot: TLEditorSnapshot): TLEditorSnapshot {
-  return snapshot;
-}
-
-// Re-export types needed by consumers
-export type { TLShape };

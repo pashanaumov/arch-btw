@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "sessionId": "f6acb5c9-a0c7-4715-a6cc-ad40916c858c",
+  "status": "running",
+  "startedAt": "2026-06-24T13:22:06.784Z",
+  "updatedAt": "2026-06-24T13:23:18.697Z",
+  "currentIteration": 0,
+  "maxIterations": 10,
+  "tasksCompleted": 0,
+  "isPaused": false,
+  "agentPlugin": "kiro",
+  "model": "claude-sonnet4.5",
+  "trackerState": {
+    "plugin": "beads",
+    "epicId": "arch-btw-2bq",
+    "epicIds": [
+      "arch-btw-2bq"
+    ],
+    "executionScopes": [
+      {
+        "id": "arch-btw-2bq",
+        "title": "arch-btw-2bq",
+        "type": "epic"
+      }
+    ],
+    "totalTasks": 13,
+    "tasks": [
+      {
+        "id": "arch-btw-2bq.1",
+        "title": "Pre-requisite: create Neon project + provision DATABASE_URL",
+        "status": "completed",
+        "completedInSession": false
+      },
+      {
+        "id": "arch-btw-uy5",
+        "title": "Debrief: Finish & get verdict -> generateObject scorecard + callbacks + revealed reference + persist",
+        "status": "open",
+        "completedInSession": false
+      },
+      {
+        "id": "arch-btw-11u",
+        "title": "Turn-based review loop: Request-review route handler + thread UI + per-turn snapshot",
+        "status": "open",
+        "completedInSession": false
+      },
+      {
+        "id": "arch-btw-a5q",
+        "title": "LLM provider layer: AI SDK swappable across Gemini/Anthropic/OpenAI by env key",
+        "status": "open",
+        "completedInSession": false
+      },
+      {
+        "id": "arch-btw-41o",
+        "title": "Canvas: tldraw integration with 12 custom component shapes + explanations + notes + directed arrows",
+        "status": "open",
+        "completedInSession": false
+      },
+      {
+        "id": "arch-btw-yad",
+        "title": "Serialization adapter: tldraw store -> {nodes,edges,notes} JSON (tested)",
+        "status": "open",
+        "completedInSession": false
+      },
+      {
+        "id": "arch-btw-10z",
+        "title": "Data model: Drizzle attempts schema + Zod scorecard + problem types + 1 seed problem",
+        "status": "open",
+        "completedInSession": false
+      },
+      {
+        "id": "arch-btw-ljz",
+        "title": "Auth: Better Auth + GitHub OAuth + session",
+        "status": "open",
+        "completedInSession": false
+      },
+      {
+        "id": "arch-btw-aw5",
+        "title": "Project scaffold: Next.js App Router + TS strict + Tailwind/shadcn + Drizzle + Neon",
+        "status": "in_progress",
+        "completedInSession": false
+      },
+      {
+        "id": "arch-btw-0es",
+        "title": "Author 6 curated seed problems (2 easy / 2 medium / 2 hard)",
+        "status": "open",
+        "completedInSession": false
+      },
+      {
+        "id": "arch-btw-924",
+        "title": "Deploy to Vercel + env/secrets wiring",
+        "status": "open",
+        "completedInSession": false
+      },
+      {
+        "id": "arch-btw-aj0",
+        "title": "Progress view: list past attempts and scores over time",
+        "status": "open",
+        "completedInSession": false
+      },
+      {
+        "id": "arch-btw-w1b",
+        "title": "Clarification beat: optional pre-design Q&A from canned facts",
+        "status": "open",
+        "completedInSession": false
+      }
+    ]
+  },
+  "iterations": [],
+  "skippedTaskIds": [],
+  "cwd": "/Users/pasha/Desktop/dev/arch-btw",
+  "activeTaskIds": [],
+  "subagentPanelVisible": false
+}
