@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { serializeDesign, type DesignGraph } from "@/lib/serialize";
+import { serializeDesign } from "@/lib/serialize";
 import type { TLEditorSnapshot } from "tldraw";
 
 // Helpers to build minimal snapshots for testing
