@@ -4,15 +4,15 @@
 
 **arch-btw** is a single-player system-design interview practice tool. Users drag infrastructure components onto a tldraw canvas, connect them, then enter a turn-based PR-review loop with an LLM critic. It ends with a structured scorecard debrief.
 
-**Stack:** Next.js App Router (React 19) · TypeScript strict · Tailwind + shadcn/ui · tldraw · Drizzle ORM + Neon Postgres · Better Auth + GitHub OAuth · Vercel AI SDK (streamText + generateObject) · hosted on Vercel.
+**Stack:** Next.js App Router (React 19) · TypeScript strict · Tailwind + shadcn/ui · tldraw · Drizzle ORM + Neon Postgres · Better Auth + GitHub OAuth · Vercel AI SDK (streamText + generateObject) · hosted on Vercel · **Vitest** for unit/integration tests.
 
 **Key decisions:**
 - Canvas: tldraw with 12 custom ShapeUtils (Service/API, Worker, Queue/Stream, SQL DB, NoSQL, Cache, Object storage, Gateway/LB, Third-party API, LLM provider, Webhook source, Cron + Custom)
 - LLM: swappable via env key (GEMINI_API_KEY / ANTHROPIC_API_KEY / OPENAI_API_KEY), all server-side
-- Serialization: tldraw store → `{ nodes, edges, notes }` JSON via a tested adapter; store both tldraw snapshot AND graph JSON
+- Serialization: tldraw store → `{ nodes, edges, notes }` JSON via a tested adapter; store both tldraw snapshot AND derived graph JSON
 - Auth: Better Auth (NOT Auth.js) + GitHub OAuth
 - DB: Drizzle + Neon. Scorecard uses Zod, shared between AI SDK / DB JSON column / React render.
-- Issue tracker: beads (`bd` CLI). Epic: arch-btw-2bq.
+- Test runner: Vitest. New modules need tests. If no `vitest.config.ts` exists yet, create one.
 
 **Read `docs/CONTEXT.md` for full decision log before implementing.**
 
@@ -49,31 +49,72 @@
 
 ---
 
-## Workflow
+## Definition of Done
 
-1. Read `docs/CONTEXT.md` to understand decisions (especially anything relevant to this task).
-2. Read `.ralph-tui/progress.md` for patterns, gotchas, and learnings from earlier iterations.
-3. Implement the task following the acceptance criteria above.
-4. Run quality gates (see below) — fix any failures before continuing.
-5. Commit with message: `feat({{taskId}}): {{taskTitle}}`
-6. Update `.ralph-tui/progress.md`: append a `## [{{taskId}}]` section with what you did, files changed, and any patterns/gotchas worth noting. If you discovered a reusable pattern, also add it to the `## Codebase Patterns` section at the top.
-7. Signal completion.
+A task is **complete** when ALL of the following pass with zero errors:
 
-## Quality Gates (REQUIRED — all must pass)
-
+### Tier 1 — Static checks (always required)
 ```bash
-pnpm typecheck      # tsc --noEmit — must pass with zero errors
-pnpm lint           # eslint — must pass with zero warnings
-pnpm build          # next build — must succeed
+pnpm typecheck    # tsc --noEmit
+pnpm lint         # eslint
+pnpm build        # next build
 ```
 
-If a test runner is configured (`pnpm test`), run that too.
+### Tier 2 — Unit / integration tests (required when the task produces logic)
+```bash
+pnpm test         # vitest run
+```
+
+**What to test — follow this pattern for every new module:**
+
+For **pure logic** (serialization adapter, Zod schemas, LLM provider selector, problem types):
+- ✅ Happy path: canonical input → expected output
+- ✅ Sad/edge paths: empty input, missing optional fields, unknown shape types, no API key set
+- Write tests in `src/__tests__/` or colocated `*.test.ts` — whichever fits the module
+
+For **route handlers / server actions** (review loop, debrief, auth callbacks):
+- ✅ Mock the AI SDK / DB calls (use `vi.mock`)
+- ✅ Happy path: valid request body → correct response shape
+- ✅ Sad path: missing required fields → 400; unauthenticated → 401
+- Do NOT make real LLM or DB calls in tests
+
+For **React components** (canvas page, review thread, debrief panel):
+- Static type checking is sufficient if there is no extractable logic
+- Only write component tests if the component contains branching logic worth exercising
+
+### Tier 3 — Manual smoke test (document it, don't skip it)
+After `pnpm dev` starts successfully, open the app and verify the specific behaviour described in the acceptance criteria above. Write one line in `progress.md` confirming what you saw.
+
+---
+
+## Workflow
+
+1. Read `docs/CONTEXT.md` — especially the decisions relevant to this task.
+2. Read `.ralph-tui/progress.md` — check Codebase Patterns for conventions already established.
+3. Implement the task.
+4. If vitest is not yet configured, add it now (`vitest`, `@vitest/ui`, `jsdom` as devDeps; minimal `vitest.config.ts`).
+5. Write tests per the rules above.
+6. Run Tier 1 + Tier 2 checks — fix all failures before proceeding.
+7. Commit: `feat({{taskId}}): {{taskTitle}}`
+8. Append to `.ralph-tui/progress.md`:
+
+```
+## [{{taskId}}] {{taskTitle}}
+- What was implemented
+- Files created/changed
+- Smoke test result (one line)
+- Learnings / gotchas
+```
+
+If you found a reusable pattern, also add it to the **Codebase Patterns** section at the top of `progress.md`.
+
+9. Signal completion.
+
+---
 
 ## Stop Condition
 
-If the work described is already fully implemented and meets the acceptance criteria, verify the quality gates pass and signal completion immediately — do not re-implement.
-
----
+If the work is already fully implemented and passes all checks, confirm in `progress.md` and signal completion immediately.
 
 When done, output exactly:
 <promise>COMPLETE</promise>
