@@ -4,7 +4,6 @@ import { Excalidraw } from "@excalidraw/excalidraw";
 import type { ExcalidrawImperativeAPI, AppState } from "@excalidraw/excalidraw/types";
 import type { ExcalidrawElement } from "@excalidraw/excalidraw/element/types";
 import "@excalidraw/excalidraw/index.css";
-import { NotesPanel } from "./NotesPanel";
 
 export type CanvasSnapshot = {
   elements: readonly ExcalidrawElement[];
@@ -17,15 +16,16 @@ type DesignCanvasProps = {
   onSnapshotChange?: (snapshot: CanvasSnapshot, notes: string) => void;
 };
 
-export function DesignCanvas({ snapshot, notes: initialNotes = "", onSnapshotChange }: DesignCanvasProps) {
+export function DesignCanvas({ snapshot, notes = "", onSnapshotChange }: DesignCanvasProps) {
   const [excalidrawAPI, setExcalidrawAPI] = useState<ExcalidrawImperativeAPI | null>(null);
-  const [notes, setNotes] = useState(initialNotes);
-  const notesRef = useRef(initialNotes);
+  const notesRef = useRef(notes);
 
-  // Load library once API is available
+  useEffect(() => {
+    notesRef.current = notes;
+  }, [notes]);
+
   useEffect(() => {
     if (!excalidrawAPI) return;
-
     fetch("/arch-btw-library.excalidrawlib")
       .then((r) => r.json())
       .then((lib) => {
@@ -43,20 +43,6 @@ export function DesignCanvas({ snapshot, notes: initialNotes = "", onSnapshotCha
     onSnapshotChange({ elements, appState }, notesRef.current);
   }
 
-  function handleNotesChange(value: string) {
-    notesRef.current = value;
-    setNotes(value);
-    if (onSnapshotChange && excalidrawAPI) {
-      onSnapshotChange(
-        {
-          elements: excalidrawAPI.getSceneElements(),
-          appState: excalidrawAPI.getAppState(),
-        },
-        value
-      );
-    }
-  }
-
   return (
     <div style={{ position: "absolute", inset: 0 }}>
       <Excalidraw
@@ -67,7 +53,6 @@ export function DesignCanvas({ snapshot, notes: initialNotes = "", onSnapshotCha
           canvasActions: { loadScene: false, export: false, saveToActiveFile: false },
         }}
       />
-      <NotesPanel notes={notes} onChange={handleNotesChange} />
     </div>
   );
 }
