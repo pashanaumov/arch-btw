@@ -14,7 +14,7 @@ export default function CanvasPage() {
     <div style={{ display: "flex", height: "100vh", overflow: "hidden" }}>
       {/* Canvas — 70% */}
       <div style={{ flex: "0 0 70%", position: "relative" }}>
-        <DesignCanvas notes={notes} onSnapshotChange={(_snap, n) => setNotes(n)} />
+        <DesignCanvas />
       </div>
 
       {/* Notes — 30% */}

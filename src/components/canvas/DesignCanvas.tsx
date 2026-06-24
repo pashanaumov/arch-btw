@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Excalidraw } from "@excalidraw/excalidraw";
 import type { ExcalidrawImperativeAPI, AppState } from "@excalidraw/excalidraw/types";
 import type { ExcalidrawElement } from "@excalidraw/excalidraw/element/types";
@@ -12,17 +12,11 @@ export type CanvasSnapshot = {
 
 type DesignCanvasProps = {
   snapshot?: CanvasSnapshot;
-  notes?: string;
-  onSnapshotChange?: (snapshot: CanvasSnapshot, notes: string) => void;
+  onSnapshotChange?: (snapshot: CanvasSnapshot) => void;
 };
 
-export function DesignCanvas({ snapshot, notes = "", onSnapshotChange }: DesignCanvasProps) {
+export function DesignCanvas({ snapshot, onSnapshotChange }: DesignCanvasProps) {
   const [excalidrawAPI, setExcalidrawAPI] = useState<ExcalidrawImperativeAPI | null>(null);
-  const notesRef = useRef(notes);
-
-  useEffect(() => {
-    notesRef.current = notes;
-  }, [notes]);
 
   useEffect(() => {
     if (!excalidrawAPI) return;
@@ -39,8 +33,7 @@ export function DesignCanvas({ snapshot, notes = "", onSnapshotChange }: DesignC
   }, [excalidrawAPI]);
 
   function handleChange(elements: readonly ExcalidrawElement[], appState: AppState) {
-    if (!onSnapshotChange) return;
-    onSnapshotChange({ elements, appState }, notesRef.current);
+    onSnapshotChange?.({ elements, appState });
   }
 
   return (
